@@ -436,7 +436,7 @@ namespace ScreenToGif.Windows
             {
                 var ofd = new SaveFileDialog();
                 ofd.AddExtension = true;
-                ofd.Filter = "Avi Video (*.avi)|*.avi";
+                ofd.Filter = "Mp4 Video (*.mp4)|*.mp4|Avi Video (*.avi)|*.avi";
                 ofd.Title = "Save Animation as Video";
 
                 var result = ofd.ShowDialog();

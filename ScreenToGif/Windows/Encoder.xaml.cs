@@ -372,6 +372,18 @@ namespace ScreenToGif.Windows
 
                 var image = listFrames[0].ImageLocation.SourceFrom();
 
+                string mp4FileName = null;
+                if (fileName.EndsWith(".mp4"))
+                {
+                    mp4FileName = fileName;
+                    fileName = Path.Combine(Path.GetTempPath(), "temp.avi");
+
+                    if (File.Exists(fileName))
+                    {
+                        File.Delete(fileName);
+                    }
+                }
+
                 using (var aviWriter = new AviWriter(fileName, 1000 / listFrames[0].Delay, (int)Math.Round(image.Width, MidpointRounding.AwayFromZero), (int)Math.Round(image.Height, MidpointRounding.AwayFromZero), 5000))
                 {
                     int numImage = 0;
@@ -408,6 +420,15 @@ namespace ScreenToGif.Windows
 
                         #endregion
                     }
+                }
+
+                if (!String.IsNullOrEmpty(mp4FileName))
+                {
+                    var startInfo = new ProcessStartInfo("ffmpeg", String.Format("-i \"{0}\" \"{1}\"", fileName, mp4FileName));
+                    startInfo.UseShellExecute = false;
+                    var process = Process.Start(startInfo);
+                    process.WaitForExit(10000);
+                    File.Delete(fileName);
                 }
 
                 #endregion
